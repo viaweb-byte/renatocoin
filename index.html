@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Renatocoin (RNC) - El Token del Morbo</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=Montserrat:wght@800&display=swap');
+
+        :root {
+            --gold: #d4af37;
+            --dark-gold: #b8860b;
+            --purple: #4a2c5e;
+            --dark-bg: #1a1a24;
+            --teal-smoke: #40e0d0;
+            --text-light: #f4f4f4;
+            --green: #14f195;
+            --red: #ff4d4d;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--dark-bg);
+            background-image: radial-gradient(circle, #2a2a35 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--text-light);
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        /* TARJETA PRINCIPAL */
+        .card-container {
+            background: linear-gradient(135deg, var(--purple) 0%, #2c183a 100%);
+            border: 8px solid var(--gold);
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3), inset 0 0 20px rgba(0,0,0,0.8);
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        /* HEADER */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            background: rgba(0,0,0,0.4);
+            padding: 10px;
+            border-radius: 12px;
+            border: 1px solid var(--dark-gold);
+        }
+
+        .wallet { font-size: 1.2em; font-weight: bold; color: var(--gold); }
+
+        .user-btn {
+            background: var(--gold);
+            color: #000;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+
+        .header-title {
+            font-size: 2.2em;
+            color: var(--gold);
+            text-shadow: 3px 3px 0px #000, -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000, 1px 1px 0px #000;
+            margin: 10px 0;
+            transform: rotate(-2deg);
+        }
+
+        .subtitle { font-family: 'Comic Neue', cursive; font-size: 1em; margin-bottom: 15px; color: #ccc; }
+
+        /* IMAGEN */
+        .image-container {
+            position: relative;
+            width: 100%;
+            border-radius: 15px;
+            border: 4px solid var(--dark-gold);
+            overflow: hidden;
+            background: #000;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .smoke-effect {
+            position: absolute;
+            top: 20%; left: 20%;
+            width: 80px; height: 80px;
+            background: radial-gradient(circle, var(--teal-smoke) 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: floatSmoke 3s infinite ease-in-out alternate;
+        }
+
+        @keyframes floatSmoke {
+            0% { transform: translateY(0) scale(1); opacity: 0.4; }
+            100% { transform: translateY(-20px) scale(1.8); opacity: 0; }
+        }
+
+        /* TEXTOS */
+        .warning-text {
+            color: var(--red);
+            font-weight: bold;
+            font-size: 1em;
+            margin: 15px 0;
+            transform: rotate(1deg);
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        .morbo-text {
+            font-family: 'Comic Neue', cursive;
+            font-size: 1.1em;
+            color: var(--teal-smoke);
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px #000;
+            padding: 10px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            border: 1px dashed var(--teal-smoke);
+        }
+
+        .tokenomics {
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px dashed var(--gold);
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+
+        .supply { font-size: 1.4em; color: var(--gold); font-weight: bold; text-shadow: 2px 2px 0 #000; }
+
+        /* BOTONES */
+        .btn {
+            background-color: var(--gold);
+            color: #000;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1em;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 var(--dark-gold);
+            transition: all 0.1s;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .btn:active { transform: translateY(4px); box-shadow: 0 0 0 var(--dark-gold); }
+        .btn-action { background-color: var(--teal-smoke); box-shadow: 0 4px 0 #208a7e; }
+
+        /* TOAST (NOTIFICACIONES) */
+        .toast {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
+            background: var(--gold); color: #000; padding: 10px 20px; border-radius: 20px;
+            font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.3s; z-index: 9999; pointer-events: none;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+        .toast.error { background: var(--red); color: white; }
+
+        /* MODALES */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000;
+        }
+        .modal-overlay.active { display: flex; }
+
+        .modal-box {
+            background: linear-gradient(135deg, #2c183a 0%, var(--purple) 100%);
+            border: 4px solid var(--gold);
+            border-radius: 20px; padding: 20px; width: 90%; max-width: 350px; text-align: center;
+        }
+        .modal-box h3 { color: var(--gold); margin-bottom: 15px; }
+
+        .input-group { margin-bottom: 15px; text-align: left; }
+        .input-group label { display: block; font-size: 0.8em; margin-bottom: 5px; color: #ccc; }
+        .input-group input {
+            width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--dark-gold);
+            background: #000; color: white; font-family: 'Montserrat', sans-serif; font-weight: bold; outline: none;
+        }
+
+        .close-btn { background: none; border: none; color: var(--red); font-size: 1em; font-weight: bold; cursor: pointer; margin-top: 15px; text-decoration: underline; }
+
+        /* GRÁFICO DE TRADING */
+        .chart-container {
+            background: #000; border-radius: 10px; border: 1px solid var(--dark-gold);
+            padding: 10px; margin-bottom: 15px; position: relative;
+        }
+        #tradeChart { width: 100%; height: 100px; display: block; }
+        .price-display { font-size: 1.5em; font-weight: bold; color: var(--gold); margin-top: 5px; }
+        .price-up { color: var(--green); }
+        .price-down { color: var(--red); }
+        
+        .trade-buttons { display: flex; gap: 10px; margin-top: 10px; }
+        .btn-buy { background: var(--green); box-shadow: 0 4px 0 #0a9e63; }
+        .btn-sell { background: var(--red); color: white; box-shadow: 0 4px 0 #b32d2d; }
+
+        /* FOOTER */
+        .footer-text {
+            font-size: 0.7em;
+            color: #888;
+            text-transform: uppercase;
+            margin-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="toast" id="toast">Mensaje</div>
+
+    <div class="card-container">
+        <div class="top-bar">
+            <div class="wallet">👛 <span id="wallet-balance">0</span> RNC</div>
+            <button class="user-btn" onclick="cambiarUsuario()" id="user-display">Renato</button>
+        </div>
+
+        <h1 class="header-title">RENATOCOIN (RNC)</h1>
+        <p class="subtitle">La criptomoneda del morbo y el vapeo</p>
+
+        <div class="image-container">
+            <div class="smoke-effect"></div>
+        </div>
+
+        <div class="warning-text">¡ADICTO AL MORBO DE GUSINI ANALY ADICTO AL VAPE GAY Y FUMO SIEMPRE!</div>
+
+        <!-- TEXTO NUEVO AGREGADO -->
+        <div class="morbo-text">
+            Le gusta el morbo de Tails, fuma vape y es adicto de la peor manera.
+        </div>
+
+        <div class="tokenomics">
+            <p>SUMINISTRO TOTAL:</p>
+            <div class="supply" id="total-supply">19.987.654.3</div>
+        </div>
+
+        <button class="btn" onclick="comprarMoneda()">COMPRAR 1 RNC (AL INSTANTE)</button>
+        
+        <div style="display: flex; gap: 10px;">
+            <button class="btn btn-action" onclick="abrirModal('modal-envio')">Transferir</button>
+            <button class="btn btn-action" onclick="abrirModal('modal-trade')">Trading</button>
+        </div>
+
+        <div class="footer-text">
+            <p>.</p>
+            <p>100% LEGIT 🇨🇱.</p>
+        </div>
+    </div>
+
+    <!-- MODAL TRANSFERENCIA -->
+    <div class="modal-overlay" id="modal-envio">
+        <div class="modal-box">
+            <h3>Transferir RNC</h3>
+            <div class="input-group">
+                <label>Nombre de usuario</label>
+                <input type="text" id="transfer-target" placeholder="Ej: Tomas, Maxi">
+            </div>
+            <div class="input-group">
+                <label>Cantidad</label>
+                <input type="number" id="transfer-amount" placeholder="0" min="1">
+            </div>
+            <button class="btn btn-action" onclick="transferir()">Enviar</button>
+            <button class="close-btn" onclick="cerrarModal('modal-envio')">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- MODAL TRADING -->
+    <div class="modal-overlay" id="modal-trade">
+        <div class="modal-box">
+            <h3>Mercado en Vivo</h3>
+            
+            <div class="chart-container">
+                <canvas id="tradeChart" width="300" height="100"></canvas>
+                <div class="price-display" id="trade-price">$1.0000</div>
+            </div>
+
+            <div class="input-group">
+                <label>Cantidad de RNC a operar</label>
+                <input type="number" id="trade-amount" placeholder="0.00" step="any" min="0.1">
+            </div>
+            
+            <div class="trade-buttons">
+                <button class="btn btn-buy" onclick="ejecutarTrade('buy')">Comprar</button>
+                <button class="btn btn-sell" onclick="ejecutarTrade('sell')">Vender</button>
+            </div>
+            
+            <button class="close-btn" onclick="cerrarModal('modal-trade')">Cerrar Mercado</button>
+        </div>
+    </div>
+
+    <script>
+        // --- ESTADO GLOBAL (PROTEGIDO) ---
+        let state = {
+            users: {},
+            currentUser: "Renato",
+            supply: 19987654.3,
+            tradePrice: 1.0000,
+            priceHistory: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        };
+
+        // Intentar cargar de la memoria
+        try {
+            let saved = localStorage.getItem('rnc_final_v1');
+            if (saved) {
+                let parsed = JSON.parse(saved);
+                if (parsed.users) state.users = parsed.users;
+                if (parsed.currentUser) state.currentUser = parsed.currentUser;
+                if (parsed.supply) state.supply = parsed.supply;
+            }
+        } catch (e) {
+            console.warn("Memoria bloqueada, usando estado en vivo.");
+        }
+
+        // Crear usuarios si no existen
+        if (Object.keys(state.users).length === 0) {
+            state.users = {
+                "Renato": { rsc: 0, portfolio: 0 },
+                "Tomas": { rsc: 0, portfolio: 0 },
+                "Maxi": { rsc: 0, portfolio: 0 }
+            };
+        }
+        if (!state.users[state.currentUser]) state.currentUser = "Renato";
+
+        // Variable del gráfico
+        const canvas = document.getElementById('tradeChart');
+        const ctx = canvas.getContext('2d');
+        let toastTimeout;
+
+        // Iniciar
+        window.onload = () => {
+            renderUI();
+            dibujarGrafico();
+            setInterval(actualizarMercado, 1000); // La línea se mueve cada 1 segundo
+        };
+
+        // Guardar datos
+        function guardar() {
+            try {
+                localStorage.setItem('rnc_final_v1', JSON.stringify({
+                    users: state.users,
+                    currentUser: state.currentUser,
+                    supply: state.supply
+                }));
+            } catch (e) {}
+        }
+
+        // --- RENDERIZADO BÁSICO ---
+        function renderUI() {
+            const user = state.users[state.currentUser];
+            document.getElementById('wallet-balance').innerText = user.rsc.toFixed(2);
+            document.getElementById('user-display').innerText = state.currentUser;
+            
+            // Formatear el suministro
+            let supplyStr = state.supply.toFixed(1);
+            supplyStr = supplyStr.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            document.getElementById('total-supply').innerText = supplyStr;
+            
+            guardar();
+        }
+
+        // --- COMPRAR 1 RNC (AL INSTANTE) ---
+        function comprarMoneda() {
+            if (state.supply < 1) return mostrarToast("No hay suministro", true);
+            
+            state.users[state.currentUser].rsc += 1;
+            state.supply -= 1;
+            
+            renderUI();
+            mostrarToast("¡Has comprado 1 RNC! 🪙");
+        }
+
+        // --- LÓGICA DE TRADING (GRÁFICO Y PRECIO) ---
+        function actualizarMercado() {
+            // Generar movimiento aleatorio
+            let cambio = (Math.random() - 0.48) * 0.05; 
+            state.tradePrice = Math.max(0.0001, state.tradePrice * (1 + cambio));
+            
+            state.priceHistory.push(state.tradePrice);
+            if (state.priceHistory.length > 20) state.priceHistory.shift();
+
+            const priceEl = document.getElementById('trade-price');
+            priceEl.innerText = `$${state.tradePrice.toFixed(4)}`;
+            
+            if (cambio > 0) {
+                priceEl.className = 'price-display price-up';
+            } else {
+                priceEl.className = 'price-display price-down';
+            }
+
+            dibujarGrafico();
+        }
+
+        function dibujarGrafico() {
+            if (!ctx) return;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            let max = Math.max(...state.priceHistory);
+            let min = Math.min(...state.priceHistory);
+            let range = max - min;
+            if (range === 0) range = 1;
+
+            ctx.beginPath();
+            ctx.strokeStyle = state.priceHistory[19] >= state.priceHistory[18] ? '#14f195' : '#ff4d4d';
+            ctx.lineWidth = 2;
+
+            for (let i = 0; i < state.priceHistory.length; i++) {
+                let x = (i / (state.priceHistory.length - 1)) * canvas.width;
+                let y = canvas.height - ((state.priceHistory[i] - min) / range) * (canvas.height - 10) - 5;
+                
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+        }
+
+        // --- COMPRA / VENTA EN EL TRADING ---
+        function ejecutarTrade(action) {
+            let amount = parseFloat(document.getElementById('trade-amount').value);
+            let user = state.users[state.currentUser];
+            let totalCost = amount * state.tradePrice;
+
+            if (!amount || amount <= 0) return mostrarToast("Cantidad inválida", true);
+
+            if (action === 'buy') {
+                if (user.rsc < totalCost) return mostrarToast("No tenés suficiente RNC", true);
+                user.rsc -= totalCost;
+                user.portfolio = (user.portfolio || 0) + amount;
+                mostrarToast(`Compraste ${amount} a $${state.tradePrice.toFixed(4)}`);
+            } else {
+                if ((user.portfolio || 0) < amount) return mostrarToast("No tenés suficientes activos", true);
+                user.rsc += totalCost;
+                user.portfolio -= amount;
+                mostrarToast(`Vendiste ${amount} a $${state.tradePrice.toFixed(4)}`);
+            }
+
+            document.getElementById('trade-amount').value = "";
+            renderUI();
+        }
+
+        // --- TRANSFERENCIAS Y USUARIOS ---
+        function transferir() {
+            let destino = document.getElementById('transfer-target').value.trim();
+            let amount = parseFloat(document.getElementById('transfer-amount').value);
+            let user = state.users[state.currentUser];
+
+            if (!destino || destino === state.currentUser) return mostrarToast("Nombre inválido", true);
+            if (!amount || amount <= 0) return mostrarToast("Cantidad inválida", true);
+            if (user.rsc < amount) return mostrarToast("No tenés suficiente RNC", true);
+
+            if (!state.users[destino]) state.users[destino] = { rsc: 0, portfolio: 0 };
+
+            user.rsc -= amount;
+            state.users[destino].rsc += amount;
+
+            cerrarModal('modal-envio');
+            renderUI();
+            mostrarToast(`Le enviaste ${amount} RNC a ${destino} 💸`);
+        }
+
+        function cambiarUsuario() {
+            let nuevo = prompt("Ingresá tu nombre de usuario:", state.currentUser);
+            if (nuevo && nuevo.trim() !== "") {
+                nuevo = nuevo.trim();
+                if (!state.users[nuevo]) state.users[nuevo] = { rsc: 0, portfolio: 0 };
+                state.currentUser = nuevo;
+                renderUI();
+                mostrarToast(`Ahora sos: ${nuevo}`);
+            }
+        }
+
+        // --- UTILIDADES ---
+        function abrirModal(id) {
+            document.getElementById(id).classList.add('active');
+            if(id === 'modal-trade') dibujarGrafico(); 
+        }
+
+        function cerrarModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        function mostrarToast(msg, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.className = 'toast show';
+            if (isError) toast.classList.add('error');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => { toast.classList.remove('show'); }, 2500);
+        }
+    </script>
+</body>
+</html>
